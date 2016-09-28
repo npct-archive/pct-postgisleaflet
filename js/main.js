@@ -97,9 +97,14 @@ function initialize(){
 	});
 
 	var tileLayer =  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+	
+	map.on('zoomend', function (e) {
+    zoom_based_update_data();
+  });
+
 
 	//next: add features to map
-	getData();
+	//getData();
 };
 
 function getData(){
@@ -115,12 +120,8 @@ function getData(){
 };
 
 
-map.on('zoomend', function (e) {
-    zoom_based_update_data();
-});
-
 function zoom_based_update_data() {
-    //console.log(map.getZoom());
+    console.log(map.getZoom());
     $("#zoomlevel").html(map.getZoom());
     var currentZoom = map.getZoom();
         switch (currentZoom) {
@@ -135,30 +136,27 @@ function zoom_based_update_data() {
         case 5:
         case 6:
         case 7:
-        case 8:
-        case 9:
-        case 10:
-/*            table = regions;
-					  fields = fields;
-            break;      */
-        case 11:
-        case 12:
-        case 13:
             table_name = "msoa_centroid";
 					  fields = fields;
             break;      
-        case 14:
-        case 15:
-        case 16:
+        case 8:
+        case 9:
+        case 10:
             table_name = "lsoa_centroid";
 					  fields = fields;
             break;      
-        case 17:
-        case 18:
-        case 19:
+        case 11:
+        case 12:
+        case 13:
             table_name = "oa_centroid";
 					  fields = fields;
             break;
+        case 14:
+        case 15:
+        case 16:
+        case 17:
+        case 18:
+        case 19:
         }
         getData();
 }
