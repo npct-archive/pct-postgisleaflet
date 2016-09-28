@@ -18,6 +18,13 @@ if (!$conn) {
 $table = $_GET['table'];
 $fields = $_GET['fields'];
 
+$w = $_GET['west'];
+$s = $_GET['south'];
+$e = $_GET['east'];
+$n = $_GET['north'];
+
+$sql_query = $_GET['query'];
+
 //turn fields array into formatted string
 $fieldstr = "";
 foreach ($fields as $i => $field){
@@ -25,21 +32,13 @@ foreach ($fields as $i => $field){
 }
 
 //get the geometry as geojson in WGS84
-$fieldstr = $fieldstr . "ST_AsGeoJSON(ST_Transform(l.geom,4326))";
+$fieldstr = $fieldstr;
 
 //create basic sql statement
-$sql = "SELECT $fieldstr FROM $table l limit 1000";
-
-//if a query, add those to the sql statement
-if (isset($_GET['featname'])){
-	$featname = $_GET['featname'];
-	$distance = $_GET['distance'] * 1000; //change km to meters
-
-	//join for spatial query - table geom is in EPSG:26916
-	$sql = $sql . " LEFT JOIN $table r ON ST_DWithin(l.geom, r.geom, $distance) WHERE r.featname = '$featname';";
-}
-
-// echo $sql;
+$sql = $sql_query;
+//"SELECT $fieldstr FROM $table as l where l.geom && ST_MakeEnvelope(
+//POLYGON($w, $s, $e, $n), 4326)";
+echo $sql;
 
 //send the query
 if (!$response = pg_query($conn, $sql)) {
