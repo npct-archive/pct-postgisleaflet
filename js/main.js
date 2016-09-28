@@ -114,6 +114,56 @@ function getData(){
 	})
 };
 
+
+map.on('zoomend', function (e) {
+    zoom_based_update_data();
+});
+
+function zoom_based_update_data() {
+    //console.log(map.getZoom());
+    $("#zoomlevel").html(map.getZoom());
+    var currentZoom = map.getZoom();
+        switch (currentZoom) {
+    	default:
+            // Show Regions
+                        break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+/*            table = regions;
+					  fields = fields;
+            break;      */
+        case 11:
+        case 12:
+        case 13:
+            table_name = "msoa_centroid";
+					  fields = fields;
+            break;      
+        case 14:
+        case 15:
+        case 16:
+            table_name = "lsoa_centroid";
+					  fields = fields;
+            break;      
+        case 17:
+        case 18:
+        case 19:
+            table_name = "oa_centroid";
+					  fields = fields;
+            break;
+        }
+        getData();
+}
+
+
 function mapData(data){
 	//remove existing map layers
 	map.eachLayer(function(layer){
