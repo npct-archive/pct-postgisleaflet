@@ -28,7 +28,7 @@ foreach ($fields as $i => $field){
 $fieldstr = $fieldstr . "ST_AsGeoJSON(ST_Transform(l.geom,4326))";
 
 //create basic sql statement
-$sql = "SELECT $fieldstr FROM $table l";
+$sql = "SELECT $fieldstr FROM $table l limit 1000";
 
 //if a query, add those to the sql statement
 if (isset($_GET['featname'])){
