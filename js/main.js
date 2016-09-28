@@ -107,11 +107,17 @@ function initialize(){
 	//getData();
 };
 
-function getData(){
+function getData(s, n, e, w){
+  console.log("getdata  ", s, n, w, e);
 	$.ajax("php/getData.php", {
 		data: {
 			table: table_name,
-			fields: fields
+			fields: fields,
+			west: w,
+			south: s,
+			east: e,
+			north: n,
+			query: "SELECT id, geom FROM msoa_centroid WHERE geom && ST_MakeEnvelope(-0.11, 51.45, -0.09, 51.5, 4326)",
 		},
 		success: function(data){
 			mapData(data);
@@ -121,7 +127,7 @@ function getData(){
 
 
 function zoom_based_update_data() {
-    console.log(map.getZoom());
+  //console.log(map.getBounds().getSouth(), " - ", map.getBounds().getNorth(), " - ", map.getBounds().getEast(), " - ", map.getBounds().getWest());
     $("#zoomlevel").html(map.getZoom());
     var currentZoom = map.getZoom();
         switch (currentZoom) {
@@ -158,7 +164,7 @@ function zoom_based_update_data() {
         case 18:
         case 19:
         }
-        getData();
+        getData(map.getBounds().getSouth(), map.getBounds().getNorth(), map.getBounds().getEast(), map.getBounds().getWest());
 }
 
 
